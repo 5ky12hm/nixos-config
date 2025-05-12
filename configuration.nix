@@ -9,6 +9,22 @@ pkgs,
 ...
 }:
 
+let
+# 	fhsEnv = pkgs.buildFHSEnv {
+# 		name = "fhs-x86_64";
+# 		targetPkgs = pkgs: [
+# 			(pkgs.glibc.overrideAttrs (oldAttrs: { system = "x86_64-linux"; }))
+# 		];
+# 		wrapQemu = true;
+# 	};
+
+	nixpkgsSrc = builtins.fetchTarball {
+		url = "https://github.com/NixOS/nixpkgs/archive/nixos-24.11.tar.gz";
+		sha256 = "sha256:16pw0f94nr3j91z0wm4ndjm44xfd238vcdkg07s2l74znkaavnwk";
+	};
+	x86pkgs = import nixpkgsSrc { system = "x86_64-linux"; };
+	x86glibcLib = "${x86pkgs.glibc}/lib";
+in
 {
 	imports = [
 		# Include the results of the hardware scan.
@@ -177,13 +193,16 @@ pkgs,
 		file
 		# check security bits on executables
 		checksec
+		# execute x86_64 ELF
+		# qemu
+		# fhsEnv
 	];
 
 	# enable programs
 	programs = {
-		nix-ld = {
-			enable = true;
-		};
+		#nix-ld = {
+		#	enable = true;
+		#};
 		zsh = {
 			enable = true;
 		};
@@ -270,5 +289,13 @@ pkgs,
 			"rw"
 			"nofail"
 		];
+	};
+	# boot.binfmt.emulatedSystems = [
+	# 	"x86_64-linux"
+	# ];
+	virtualisation.rosetta.enable = true;
+	fileSystems."/lib64" = {
+		device = x86glibcLib;
+		options = [ "bind" "ro" ];
 	};
 }
