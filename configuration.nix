@@ -12,7 +12,7 @@ pkgs,
 let
 	nixpkgsSrc = builtins.fetchTarball {
 		url = "https://github.com/NixOS/nixpkgs/archive/nixos-24.11.tar.gz";
-		sha256 = "sha256:16pw0f94nr3j91z0wm4ndjm44xfd238vcdkg07s2l74znkaavnwk";
+		sha256 = "sha256:1ybhmmb9ph8ki7yicsnnvav4hxlh771zg82y642drsbbjs3f4szp";
 	};
 	x86pkgs = import nixpkgsSrc { system = "x86_64-linux"; };
 	x86glibcLib = "${x86pkgs.glibc}/lib";
@@ -145,6 +145,10 @@ in
 		};
 	};
 
+	nixpkgs.config = {
+		allowUnfree = true;
+	};
+
 	# install programs
 	environment.systemPackages = with pkgs; [
 		# -- base packages --
@@ -153,24 +157,44 @@ in
 		stow
 		# neovim clipboard
 		xclip
+		# docker
+		docker
+		# aws
+		awscli2
 
 		# -- development packages --
 
 		# common
 		gnumake
+		cmake
 		# nix
 		nixfmt-rfc-style
 		# c
 		gcc
+		# java
+		jdk
 		# rust
 		rustup
 		# go
 		go
 		# python
-		# commented out: consider with nix system
-		# uv
+		(python3.withPackages (pypkgs: with pypkgs; [
+			# lsp
+			python-lsp-server
+			pluggy
+			python-lsp-jsonrpc
+			docstring-to-markdown
+			jedi
+			parso
+
+			# analysis
+			pwntools
+			pycrypto
+		]))
 		# javascript
 		volta
+		# lua
+		lua-language-server
 
 		# -- improved packages --
 
@@ -178,23 +202,43 @@ in
 		eza
 		# grep
 		ripgrep
+		# mysql
+		mycli
 
 		# -- analysis packages
 
 		# shows type of files
 		file
-		# check security bits on executables
-		checksec
+		# checksec, cyclic, pwntools-gdb etc...
+		pwntools
+		# edit binary
+		tinyxxd
+		# edit exif
+		exiftool
 		# execute x86_64 ELF
 		# qemu
 		# fhsEnv
+		# operate image
+		imagemagick
+		# decompose file
+		binwalk
+		# compress executable file
+		upx
+		# operate bit of image
+		# commented out: unable to extract plane 0
+		# also following error occured
+		# (java:1341): Gtk-WARNING **: 18:00:48.792: Could not load a pixbuf from /org/gtk/libgtk/theme/Adwaita/assets/bullet-symbolic.svg.
+		# This may indicate that pixbuf loaders or the mime database could not be found.
+		# stegsolve
+		# cryptography
+		openssl
 	];
 
 	# enable programs
 	programs = {
-		#nix-ld = {
-		#	enable = true;
-		#};
+		nix-ld = {
+			enable = true;
+		};
 		zsh = {
 			enable = true;
 		};
@@ -221,6 +265,8 @@ in
 		};
 	};
 
+	virtualisation.docker.enable = true;
+
 	# add user
 	users = {
 		# commented out: enable root login without initialHashedPassword for root
@@ -229,6 +275,7 @@ in
 			isNormalUser = true;
 			extraGroups = [
 				"wheel"
+				"docker"
 			];
 			shell = pkgs.zsh;
 			# initialHashedPassword = "";
