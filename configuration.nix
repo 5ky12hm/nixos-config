@@ -153,6 +153,8 @@
     gnumake
     # c
     gcc
+	# rust
+	rustup
     # go
     go
 	# python
