@@ -162,8 +162,7 @@ pkgs,
 		# commented out: consider with nix system
 		# uv
 		# javascript
-		# commented out: consider with nix system
-		# volta
+		volta
 
 		# -- improved packages --
 
