@@ -2,13 +2,18 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{
+config,
+lib,
+pkgs,
+...
+}:
 
 {
-	imports =
-		[ # Include the results of the hardware scan.
+	imports = [
+		# Include the results of the hardware scan.
 		./hardware-configuration.nix
-		];
+	];
 
 	# Use the systemd-boot EFI boot loader.
 	boot.loader.systemd-boot.enable = true;
@@ -36,9 +41,6 @@
 
 	# Enable the X11 windowing system.
 	# services.xserver.enable = true;
-
-
-
 
 	# Configure keymap in X11
 	# services.xserver.xkb.layout = "us";
@@ -119,24 +121,21 @@
 	# For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
 	system.stateVersion = "24.11"; # Did you read the comment?
 
-
-
-
 	# my config
 
 	# enable gc
-		nix = {
-			settings = {
-				experimental-features = [
-					"nix-command"
-						"flakes"
-				];
-			};
-			gc = {
-				automatic = true;
-				dates = "weekly";
-			};
+	nix = {
+		settings = {
+			experimental-features = [
+				"nix-command"
+				"flakes"
+			];
 		};
+		gc = {
+			automatic = true;
+			dates = "weekly";
+		};
+	};
 
 	# install programs
 	environment.systemPackages = with pkgs; [
@@ -218,26 +217,32 @@
 			];
 		};
 	};
-	security.sudo.extraRules = [{
-		users = [ "5ky12hm" ];
-		commands = [{
-			command = "ALL";
-			options = [ "NOPASSWD" ];
-		}];
-	}];
+	security.sudo.extraRules = [
+		{
+			users = [ "5ky12hm" ];
+			commands = [
+				{
+					command = "ALL";
+					options = [ "NOPASSWD" ];
+				}
+			];
+		}
+	];
 
 	# network config
 	networking = {
 		hostName = "nixos";
 		useDHCP = false;
-		interfaces.enp0s1.ipv4.addresses = [{
-			address = "192.168.3.111";
-			prefixLength = 24;
-		}];
+		interfaces.enp0s1.ipv4.addresses = [
+			{
+				address = "192.168.3.111";
+				prefixLength = 24;
+			}
+		];
 		defaultGateway = "192.168.3.1";
 		nameservers = [
 			"1.1.1.1"
-				"8.8.8.8"
+			"8.8.8.8"
 		];
 	};
 
@@ -251,7 +256,9 @@
 	fileSystems."/mnt/share" = {
 		fsType = "virtiofs";
 		device = "share";
-		options = [ "rw" "nofail" ];
+		options = [
+			"rw"
+			"nofail"
+		];
 	};
 }
-
