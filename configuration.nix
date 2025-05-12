@@ -170,10 +170,20 @@ pkgs,
 		eza
 		# grep
 		ripgrep
+
+		# -- analysis packages
+
+		# shows type of files
+		file
+		# check security bits on executables
+		checksec
 	];
 
 	# enable programs
 	programs = {
+		nix-ld = {
+			enable = true;
+		};
 		zsh = {
 			enable = true;
 		};
@@ -243,6 +253,7 @@ pkgs,
 			"1.1.1.1"
 			"8.8.8.8"
 		];
+		firewall.enable = false;
 	};
 
 	# utm config
