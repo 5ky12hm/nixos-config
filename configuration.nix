@@ -10,14 +10,6 @@ pkgs,
 }:
 
 let
-# 	fhsEnv = pkgs.buildFHSEnv {
-# 		name = "fhs-x86_64";
-# 		targetPkgs = pkgs: [
-# 			(pkgs.glibc.overrideAttrs (oldAttrs: { system = "x86_64-linux"; }))
-# 		];
-# 		wrapQemu = true;
-# 	};
-
 	nixpkgsSrc = builtins.fetchTarball {
 		url = "https://github.com/NixOS/nixpkgs/archive/nixos-24.11.tar.gz";
 		sha256 = "sha256:16pw0f94nr3j91z0wm4ndjm44xfd238vcdkg07s2l74znkaavnwk";
