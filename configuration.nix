@@ -237,19 +237,26 @@ pkgs,
 	# network config
 	networking = {
 		hostName = "nixos";
-		useDHCP = false;
-		interfaces.enp0s1.ipv4.addresses = [
-			{
-				address = "192.168.3.111";
-				prefixLength = 24;
-			}
-		];
-		defaultGateway = "192.168.3.1";
-		nameservers = [
-			"1.1.1.1"
-			"8.8.8.8"
-		];
 		firewall.enable = false;
+
+		# dynamic
+		useDHCP = true;
+
+		# static
+		# useDHCP = false;
+		# interfaces.enp0s1.ipv4.addresses = [
+		# 	{
+		# 		address = "192.168.3.111";
+		# 		# address = "10.244.132.111";
+		# 		prefixLength = 24;
+		# 	}
+		# ];
+		# defaultGateway = "192.168.3.1";
+		# # defaultGateway = "10.244.132.1";
+		# nameservers = [
+		# 	"1.1.1.1"
+		# 	"8.8.8.8"
+		# ];
 	};
 
 	# utm config
