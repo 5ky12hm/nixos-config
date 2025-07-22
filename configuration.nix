@@ -71,6 +71,9 @@ pkgs,
 	environment.systemPackages = with pkgs; [
 		# -- base packages --
 
+		# manual
+		man-pages
+		man-pages-posix
 		# dotfiles
 		stow
 		# neovim clipboard
@@ -124,8 +127,20 @@ pkgs,
 
 		# ls
 		eza
+		# cat
+		bat
 		# grep
 		ripgrep
+		# find
+		fd
+		# ps
+		procs
+		# top
+		htop
+		# df
+		duf
+		# du
+		dust
 		# mysql
 		mycli
 
@@ -139,9 +154,8 @@ pkgs,
 		tinyxxd
 		# edit exif
 		exiftool
-		# execute x86_64 ELF
-		# qemu
-		# fhsEnv
+		# emulator
+		qemu
 		# operate image
 		imagemagick
 		# decompose file
@@ -158,6 +172,10 @@ pkgs,
 		# stegsolve
 		# cryptography
 		openssl
+		# port scanner
+		nmap
+		# WebAssembly
+		wabt
 	];
 
 
@@ -203,6 +221,7 @@ pkgs,
 		spice-webdavd.enable = true;
 	};
 
+	documentation.dev.enable = true;
 	virtualisation.docker.enable = true;
 
 	# add user
