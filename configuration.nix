@@ -30,6 +30,9 @@ pkgs,
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
 
+	# default is 33. "Couldn't write '33' to 'vm/mmap_rnd_bits': Invalid argument"
+	boot.kernel.sysctl."vm.mmap_rnd_bits" = 18;
+
 	# This option defines the first version of NixOS you have installed on this particular machine,
 	# and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
 	#
