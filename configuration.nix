@@ -184,6 +184,9 @@ pkgs,
 		nmap
 		# WebAssembly
 		wabt
+
+		# -- ai packages
+		gemini-cli
 	];
 
 
