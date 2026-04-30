@@ -227,6 +227,17 @@ pkgs,
 		qemuGuest.enable = true;
 		spice-vdagentd.enable = true;
 		spice-webdavd.enable = true;
+
+		# mDNS
+		avahi = {
+			enable = true;
+			nssmdns4 = true;
+			publish = {
+				enable = true;
+				addresses = true;
+				workstation = true;
+			};
+		};
 	};
 
 	documentation.dev.enable = true;
@@ -267,7 +278,7 @@ pkgs,
 		hostName = "nixos";
 
 		# dynamic
-		# useDHCP = true;
+		useDHCP = true;
 
 		# static
 		# useDHCP = false;
@@ -286,7 +297,7 @@ pkgs,
 		# ];
 
 		# NetworkManager
-		networkmanager.enable = true;
+		# networkmanager.enable = true;
 	};
 
 	# utm config
