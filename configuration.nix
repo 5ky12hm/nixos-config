@@ -26,13 +26,6 @@ pkgs,
 		./hardware-configuration.nix
 	];
 
-	# Use the systemd-boot EFI boot loader.
-	boot.loader.systemd-boot.enable = true;
-	boot.loader.efi.canTouchEfiVariables = true;
-
-	# default is 33. "Couldn't write '33' to 'vm/mmap_rnd_bits': Invalid argument"
-	boot.kernel.sysctl."vm.mmap_rnd_bits" = 18;
-
 	# This option defines the first version of NixOS you have installed on this particular machine,
 	# and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
 	#
@@ -52,7 +45,18 @@ pkgs,
 	# For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
 	system.stateVersion = "24.11"; # Did you read the comment?
 
-	# enable gc
+	boot = {
+		loader = {
+			# Use the systemd-boot EFI boot loader.
+			systemd-boot.enable = true;
+			efi.canTouchEfiVariables = true;
+		};
+		kernel = {
+			# default is 33. "Couldn't write '33' to 'vm/mmap_rnd_bits': Invalid argument"
+			sysctl."vm.mmap_rnd_bits" = 18;
+		};
+	};
+
 	nix = {
 		settings = {
 			experimental-features = [
@@ -60,6 +64,7 @@ pkgs,
 				"flakes"
 			];
 		};
+		# enable gc
 		gc = {
 			automatic = true;
 			dates = "weekly";
@@ -236,6 +241,7 @@ pkgs,
 			extraGroups = [
 				"wheel"
 				"docker"
+				"networkmanager"
 			];
 			shell = pkgs.zsh;
 			# initialHashedPassword = "";
@@ -259,10 +265,9 @@ pkgs,
 	# network config
 	networking = {
 		hostName = "nixos";
-		firewall.enable = false;
 
 		# dynamic
-		useDHCP = true;
+		# useDHCP = true;
 
 		# static
 		# useDHCP = false;
@@ -279,6 +284,9 @@ pkgs,
 		# 	"1.1.1.1"
 		# 	"8.8.8.8"
 		# ];
+
+		# NetworkManager
+		networkmanager.enable = true;
 	};
 
 	# utm config
