@@ -186,9 +186,20 @@ pkgs,
 		wabt
 
 		# -- ai packages
+
 		gemini-cli
+
+		# -- X
+
+		xorg.xeyes
+
+		firefox
+		xdg-utils
 	];
 
+	environment.variables = {
+		BROWSER = "firefox";
+	};
 
 	# enable programs
 	programs = {
